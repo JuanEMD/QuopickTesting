@@ -5,8 +5,6 @@ import ServiceSpecsSVG from "./icons/ServiceSpecsSVG.vue";
 import RelojSVG from "./icons/RelojSVG.vue";
 import { ref, computed } from "vue";
 
-const labelSectionClass = ref("label-section-default");
-
 /* props */
 const props = defineProps({
   currentStep: Number,
