@@ -28,7 +28,7 @@ const options = ref(["Batman", "Robin", "Joker"]);
 </script>
 
 <template>
-  <div class="mx-4 p-4">
+  <!-- <div class="mx-4 p-4">
     <div class="flex items-center">
       <div class="flex items-center text-teal-600 relative">
         <div
@@ -148,7 +148,8 @@ const options = ref(["Batman", "Robin", "Joker"]);
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
+
   <div class="mt-8 p-4">
     <div
       class="font-bold text-gray-600 text-xs leading-8 uppercase h-6 mx-2 mt-3 mb-3"

@@ -27,14 +27,16 @@ const props = defineProps({
 </script>
 
 <style scoped>
-
-.section-default path, .section-default circle {
+.section-default path,
+.section-default circle {
   stroke: #6b7280;
 }
-.section-selected path, .section-selected circle {
+.section-selected path,
+.section-selected circle {
   stroke: white;
 }
-.section-done path, .section-done circle {
+.section-done path,
+.section-done circle {
   stroke: #0d9488;
 }
 </style>

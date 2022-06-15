@@ -51,7 +51,7 @@ const prevStepDisable = computed(() => {
 });
 
 const nextStepDisable = computed(() => {
-  return currentStep.value+1 == steps.value.length ? true : false;
+  return currentStep.value + 1 == steps.value.length ? true : false;
 });
 </script>
 
@@ -59,22 +59,22 @@ const nextStepDisable = computed(() => {
   <HeaderComponent />
 
   <div class="p-5 pb-12">
-  <Sections :current-step="currentStep"/>
+    <Sections :current-step="currentStep" />
     <component :is="steps[currentStep].component" />
     <div class="flex justify-center items-center">
       <div class="flex p-5 mt-4 justify-between w-full">
         <button
           :disabled="prevStepDisable"
           @click="prevStep"
-          class="text-base hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-gray-200 bg-gray-100 text-gray-700 border duration-200 ease-in-out border-gray-600 transition"
+          class="text-base focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-gray-200 bg-gray-100 text-gray-800 border border-gray-400 duration-200 ease-in-out"
         >
           {{ t("prev") }}
         </button>
         <div class="flex-auto flex flex-row-reverse">
           <button
-          :disabled="nextStepDisable"
+            :disabled="nextStepDisable"
             @click="nextStep"
-            class="text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-teal-600 bg-teal-600 text-teal-100 border duration-200 ease-in-out border-teal-600 transition"
+            class="text-base ml-2 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-teal-700 bg-teal-600 text-white border border-teal-600 duration-200 ease-in-out"
           >
             {{ t("next") }}
           </button>
