@@ -5,7 +5,7 @@
     width="100%"
     height="100%"
     xmlns="http://www.w3.org/2000/svg"
-    :class="{selected}"
+    :class="iconClass"
   >
     <circle cx="12" cy="12" r="8.6" stroke="#0d9488" />
     <path
@@ -19,35 +19,22 @@
 
 <script setup>
 const props = defineProps({
-  color: String,
-  selected: {
-    type: Boolean,
-    default: false,
-  },
-  defaultClass: {
-    type: Boolean,
-    default: false,
-  },
-  doneClass: {
-    type: Boolean,
-    default: false,
+  iconClass: {
+    type: String,
+    default: "#6b7280",
   },
 });
 </script>
 
 <style scoped>
-.defaultClass path,
-.default circle {
+
+.section-default path, .section-default circle {
   stroke: #6b7280;
 }
-
-.selected path,
-.selected circle {
+.section-selected path, .section-selected circle {
   stroke: white;
 }
-
-.doneClass path,
-.doneClass circle {
+.section-done path, .section-done circle {
   stroke: #0d9488;
 }
 </style>

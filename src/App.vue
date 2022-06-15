@@ -25,9 +25,9 @@ const steps = ref([
   {
     component: Services,
   },
-  {
-    component: ServiceProps,
-  },
+  // {
+  //   component: ServiceProps,
+  // },
   {
     component: Questions,
   },
@@ -39,12 +39,10 @@ const steps = ref([
 /* Methods */
 const nextStep = () => {
   ++currentStep.value;
-  console.log(steps[0])
 };
 
 const prevStep = () => {
   --currentStep.value;
-  console.log(steps.value.component)
 };
 
 /*Computed Properties*/
@@ -61,7 +59,7 @@ const nextStepDisable = computed(() => {
   <HeaderComponent />
 
   <div class="p-5 pb-12">
-  <Sections/>
+  <Sections :current-step="currentStep"/>
     <component :is="steps[currentStep].component" />
     <div class="flex justify-center items-center">
       <div class="flex p-5 mt-4 justify-between w-full">

@@ -36,7 +36,7 @@ export default {
         <div
           class="rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 bg-teal-600 border-teal-600 items-center flex"
         >
-          <UserSVG :selected="true" />
+          <!-- <UserSVG :selected="true" /> -->
         </div>
         <div
           class="absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase text-teal-600"

@@ -5,32 +5,35 @@
     fill="none"
     width="100%"
     height="100%"
-    :class="{ selected }"
+    :class="iconClass"
   >
-    <rect x="5" y="4" width="14" height="17" rx="2" stroke="#6b7280" />
-    <path d="M9 9H15" stroke="#6b7280" stroke-linecap="round" />
-    <path d="M9 13H15" stroke="#6b7280" stroke-linecap="round" />
-    <path d="M9 17H13" stroke="#6b7280" stroke-linecap="round" />
+    <rect x="5" y="4" width="14" height="17" rx="2" />
+    <path d="M9 9H15" stroke-linecap="round" />
+    <path d="M9 13H15" stroke-linecap="round" />
+    <path d="M9 17H13" stroke-linecap="round" />
   </svg>
 </template>
 
 <script setup>
 const props = defineProps({
-  selected: {
-    type: Boolean,
-    default: false,
+  iconClass: {
+    type: String,
+    default: "#6b7280",
   },
 });
 </script>
 
 <style scoped>
-path, rect {
-  /* stroke: #6b7280; */
-  stroke: #0D9488;
+.section-default path,
+.section-default rect {
+  stroke: #6b7280;
 }
-
-.selected path,
-.selected rect {
+.section-selected path,
+.section-selected rect {
   stroke: white;
+}
+.section-done path,
+.section-done rect {
+  stroke: #0d9488;
 }
 </style>
