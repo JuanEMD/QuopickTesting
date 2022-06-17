@@ -39,28 +39,28 @@ const selectSectionLine = (value) => {
       <div class="flex items-center relative section-wrapper">
         <div class="section" :class="selectSectionClass(0)">
           <UserSVG :icon-class="selectSectionClass(0)" />
-          <div class="label-section">Personal</div>
+          <div class="label-section">{{ $t("applicant") }}</div>
         </div>
       </div>
       <div class="line-section" :class="selectSectionLine(0)"></div>
       <div class="flex items-center relative relative section-wrapper">
         <div class="section" :class="selectSectionClass(1)">
           <ServicesSVG :icon-class="selectSectionClass(1)" />
-          <div class="label-section">Account</div>
+          <div class="label-section">{{ $t("service") }}</div>
         </div>
       </div>
       <div class="line-section" :class="selectSectionLine(1)"></div>
       <div class="flex items-center relative">
         <div class="section" :class="selectSectionClass(2)">
           <ServiceSpecsSVG :icon-class="selectSectionClass(2)" />
-          <div class="label-section">Message</div>
+          <div class="label-section">{{ $t("features") }}</div>
         </div>
       </div>
       <div class="line-section" :class="selectSectionLine(2)"></div>
       <div class="flex items-center relative">
         <div class="section" :class="selectSectionClass(3)">
           <RelojSVG :icon-class="selectSectionClass(3)" />
-          <div class="label-section">Confirm</div>
+          <div class="label-section">{{ $t("meeting") }}</div>
         </div>
       </div>
     </div>

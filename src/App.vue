@@ -1,9 +1,13 @@
 <script setup>
-import RequestWizardVue from './views/RequestWizard.vue';
+import RequestWizardVue from "./views/RequestWizard.vue";
+import HeaderComponent from "./components/HeaderComponent.vue";
+import FooterComponent from "./components/FooterComponent.vue";
 </script>
 
 <template>
-<RequestWizardVue/>
+  <HeaderComponent />
+  <RequestWizardVue />
+  <FooterComponent />
 </template>
 
 <style>

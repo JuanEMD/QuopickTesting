@@ -5,8 +5,6 @@ import Services from "../components/Steps/Services.vue";
 import Questions from "../components/Steps/Questions.vue";
 import DateRequest from "../components/Steps/DateRequest.vue";
 import ClientInfo from "../components/Steps/ClientInfo.vue";
-import HeaderComponent from "../components/HeaderComponent.vue";
-import FooterComponent from "../components/FooterComponent.vue";
 import Sections from "../components/Sections.vue";
 
 /* Composition API Libs */
@@ -56,7 +54,6 @@ const nextStepDisable = computed(() => {
 </script>
 
 <template>
-  <HeaderComponent />
   <div class="p-5 pb-12">
     <Sections :current-step="currentStep" />
     <component :is="steps[currentStep].component" />
@@ -87,5 +84,4 @@ const nextStepDisable = computed(() => {
       </div>
     </div>
   </div>
-  <FooterComponent />
 </template>
