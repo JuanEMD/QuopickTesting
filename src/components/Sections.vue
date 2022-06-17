@@ -3,7 +3,6 @@ import UserSVG from "./icons/UserSVG.vue";
 import ServicesSVG from "./icons/ServicesSVG.vue";
 import ServiceSpecsSVG from "./icons/ServiceSpecsSVG.vue";
 import RelojSVG from "./icons/RelojSVG.vue";
-import { ref, computed } from "vue";
 
 /* props */
 const props = defineProps({
