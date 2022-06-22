@@ -11,6 +11,7 @@
     "@vueform/multiselect": "^2.3.3",
     "@vuelidate/core": "^2.0.0-alpha.40",
     "@vuelidate/validators": "^2.0.0-alpha.28",
+    "@vuepic/vue-datepicker": "^3.2.2",
     "vue": "^3.2.25",
     "vue-i18n": "9"
   },

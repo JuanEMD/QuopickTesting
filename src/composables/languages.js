@@ -9,6 +9,7 @@ const i18n = createI18n({
       //RequestWizard
       next: "Continuar",
       prev: "Retroceder",
+      finish: "Finalizar",
       //Sections
       applicant: "Solicitante",
       service: "Servicio",
@@ -23,6 +24,7 @@ const i18n = createI18n({
       //RequestWizard
       next: "Next",
       prev: "Previous",
+      finish: "Finish",
       //Sections
       applicant: "Applicant",
       service: "Service",

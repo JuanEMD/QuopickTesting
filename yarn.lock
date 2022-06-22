@@ -203,6 +203,13 @@
   dependencies:
     "vue-demi" "^0.12.0"
 
+"@vuepic/vue-datepicker@^3.2.2":
+  "integrity" "sha512-Q+nVYsbxm2lb+nhlsBxC84UR/j/QZi0bmQZ8BFhZsyqatX0BN4Nm7/uwkZDtCE/s6jYms7zPY1Pz3DOhlQJ+PQ=="
+  "resolved" "https://registry.npmjs.org/@vuepic/vue-datepicker/-/vue-datepicker-3.2.2.tgz"
+  "version" "3.2.2"
+  dependencies:
+    "date-fns" "^2.28.0"
+
 "acorn-node@^1.6.1":
   "integrity" "sha512-8mt+fslDufLYntIoPAaIMUe/lrbrehIiwmR3t2k9LljIzoigEPF27eLk2hy8zSGzmR/ogr7zbRKINMo1u0yh5A=="
   "resolved" "https://registry.npmjs.org/acorn-node/-/acorn-node-1.8.2.tgz"
@@ -309,6 +316,11 @@
   "integrity" "sha512-/WwNkdXfckNgw6S5R125rrW8ez139lBHWouiBvX8dfMFtcn6V81REDqnH7+CRpRipfYlyU1CmOnOxrmGcFOjeA=="
   "resolved" "https://registry.npmjs.org/csstype/-/csstype-2.6.20.tgz"
   "version" "2.6.20"
+
+"date-fns@^2.28.0":
+  "integrity" "sha512-8d35hViGYx/QH0icHYCeLmsLmMUheMmTyV9Fcm6gvNwdw31yXXH+O85sOBJ+OLnLQMKZowvpKb6FgMIQjcpvQw=="
+  "resolved" "https://registry.npmjs.org/date-fns/-/date-fns-2.28.0.tgz"
+  "version" "2.28.0"
 
 "defined@^1.0.0":
   "integrity" "sha1-yY2bzvdWdBiOEQlpFRGZ45sfppM= sha512-Y2caI5+ZwS5c3RiNDJ6u53VhQHv+hHKwhkI1iHvceKUHw9Df6EK2zRLfjejRgMuCuxK7PfSWIMwWecceVvThjQ=="
@@ -719,7 +731,7 @@
     "@intlify/vue-devtools" "9.1.9"
     "@vue/devtools-api" "^6.0.0-beta.7"
 
-"vue@^3.0.0", "vue@^3.0.0-0 || ^2.6.0", "vue@^3.2.25", "vue@3.2.33":
+"vue@^3.0.0", "vue@^3.0.0-0 || ^2.6.0", "vue@^3.2.25", "vue@>=3.2.0", "vue@3.2.33":
   "integrity" "sha512-si1ExAlDUrLSIg/V7D/GgA4twJwfsfgG+t9w10z38HhL/HA07132pUQ2KuwAo8qbCyMJ9e6OqrmWrOCr+jW7ZQ=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-3.2.33.tgz"
   "version" "3.2.33"
