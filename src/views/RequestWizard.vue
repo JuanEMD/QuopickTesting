@@ -109,7 +109,7 @@ const clearLocalStorage = () => {
 
 <style scoped>
 .prevButton {
-  @apply text-base focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-gray-200 bg-gray-100 text-gray-800 border border-gray-400 duration-200 ease-in-out;
+  @apply text-base focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-gray-100 bg-white text-gray-800 border border-gray-400 duration-200 ease-in-out;
 }
 
 .nextButton {
