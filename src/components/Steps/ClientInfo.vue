@@ -9,20 +9,23 @@ export default {
 
   data() {
     return {
-      firstName: "",
-      lastName: "",
+      name: "",
+      last_name: "",
       email: "",
       phone: "",
       InputClasses: "",
+      // errorWatcher: false,
     };
   },
 
+  emits: ["validateUserData"],
+
   validations() {
     return {
-      firstName: {
+      name: {
         required: helpers.withMessage("Campo obligatorio", required),
       },
-      lastName: {
+      last_name: {
         required: helpers.withMessage("Campo obligatorio", required),
       },
 
@@ -38,15 +41,16 @@ export default {
       },
     };
   },
+
   computed: {
     validNameInput() {
       this.formInputClasses = " input-form";
 
-      if (!this.v$.firstName.$dirty) {
+      if (!this.v$.name.$dirty) {
         return this.formInputClasses;
-      } else if (this.v$.firstName.$error) {
+      } else if (this.v$.name.$error) {
         return (this.InputClasses = "input-form" + " invalid-input-class");
-      } else if (!this.v$.firstName.$invalid) {
+      } else if (!this.v$.name.$invalid) {
         return (this.InputClasses = "input-form" + " valid-input-class");
       }
     },
@@ -54,11 +58,11 @@ export default {
     validLastNameInput() {
       this.formInputClasses = " input-form";
 
-      if (!this.v$.lastName.$dirty) {
+      if (!this.v$.last_name.$dirty) {
         return this.formInputClasses;
-      } else if (this.v$.lastName.$error) {
+      } else if (this.v$.last_name.$error) {
         return (this.InputClasses = "input-form" + " invalid-input-class");
-      } else if (!this.v$.lastName.$invalid) {
+      } else if (!this.v$.last_name.$invalid) {
         return (this.InputClasses = "input-form" + " valid-input-class");
       }
     },
@@ -91,13 +95,51 @@ export default {
         return (this.InputClasses = "input-form" + " invalid-input-class");
       }
     },
+    formStatus() {
+      return (this.v$.$errors);
+    },
+
+  },
+
+  
+  watch: {
+    formStatus(newStatus, oldStatus) {
+      localStorage.setItem(
+        "userData",
+        JSON.stringify({
+          name: this.name,
+          last_name: this.last_name,
+          email: this.email,
+          phone: this.phone,
+        })
+      );
+
+      this.$emit("sendUserData", this.formStatus)
+    },
   },
 
   methods: {
-    async submit() {
-      const result = await this.v$.$validate();
-      result ? alert("Valido") : alert("Invalido");
+    checkLocalStorage() {
+      if (localStorage.getItem("userData")) {
+
+        let localStorageData = JSON.parse(localStorage.getItem("userData"));
+
+        this.name = localStorageData.name;
+        this.last_name = localStorageData.last_name;
+        this.email = localStorageData.email;
+        this.phone = localStorageData.phone;
+      }
     },
+
+    // async submit() {
+    //   const result = await this.v$.$validate();
+    //   // result ? alert("Valido") : alert("Invalido");
+    //   console.log(this.v$.$errors);
+    // },
+
+  },
+  created() {
+    this.checkLocalStorage();
   },
 };
 </script>
@@ -111,18 +153,36 @@ export default {
       <div class="flex flex-col md:flex-row">
         <div class="w-full flex-1 mx-2 svelte-1l8159u">
           <div>
-            <input :class="validNameInput" @blur="v$.firstName.$touch" v-model="firstName" placeholder="First Name"
-              required class="input-form" />
-            <p class="error-message" v-for="error of v$.firstName.$errors" :key="error.$uid">
+            <input
+              :class="validNameInput"
+              @blur="v$.name.$touch"
+              v-model="name"
+              placeholder="First Name"
+              class="input-form"
+            />
+            <p
+              class="error-message"
+              v-for="error of v$.name.$errors"
+              :key="error.$uid"
+            >
               {{ error.$message }}
             </p>
           </div>
         </div>
         <div class="w-full flex-1 mx-2 svelte-1l8159u">
           <div class="">
-            <input :class="validLastNameInput" @blur="v$.lastName.$touch" v-model="lastName" placeholder="Last Name"
-              required class="input-form" />
-            <p class="error-message" v-for="error of v$.lastName.$errors" :key="error.$uid">
+            <input
+              :class="validLastNameInput"
+              @blur="v$.last_name.$touch"
+              v-model="last_name"
+              placeholder="Last Name"
+              class="input-form"
+            />
+            <p
+              class="error-message"
+              v-for="error of v$.last_name.$errors"
+              :key="error.$uid"
+            >
               {{ error.$message }}
             </p>
           </div>
@@ -134,9 +194,18 @@ export default {
             Your Email
           </div>
           <div class="">
-            <input :class="validEmailInput" @blur="v$.email.$touch" v-model="email" placeholder="jhon@doe.com" required
-              class="input-form" />
-            <p class="error-message" v-for="error of v$.email.$errors" :key="error.$uid">
+            <input
+              :class="validEmailInput"
+              @blur="v$.email.$touch"
+              v-model="email"
+              placeholder="jhon@doe.com"
+              class="input-form"
+            />
+            <p
+              class="error-message"
+              v-for="error of v$.email.$errors"
+              :key="error.$uid"
+            >
               {{ error.$message }}
             </p>
           </div>
@@ -155,15 +224,13 @@ export default {
         </div>
       </div>
       <div class="flex p-5 mt-4 justify-between w-full">
-        <button @click=""
-          class="text-base hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-gray-200 bg-gray-100 text-gray-700 border duration-200 ease-in-out border-gray-600 transition">
-          Retroceder
-        </button>
         <div class="flex-auto flex flex-row-reverse">
-          <button @click="submit"
-            class="text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-teal-600 bg-teal-600 text-teal-100 border duration-200 ease-in-out border-teal-600 transition">
+          <!-- <button
+            @click="submit"
+            class="text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-teal-600 bg-teal-600 text-teal-100 border duration-200 ease-in-out border-teal-600 transition"
+          >
             Continuar
-          </button>
+          </button> -->
         </div>
       </div>
     </form>

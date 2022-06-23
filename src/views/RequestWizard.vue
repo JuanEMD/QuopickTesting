@@ -9,6 +9,7 @@ import Sections from "../components/Sections.vue";
 /* Composition API Libs */
 import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
+import { tr } from "date-fns/locale";
 
 /* Libs variables */
 const { t } = useI18n();
@@ -16,6 +17,7 @@ const { t } = useI18n();
 
 /* Data Binding */
 const currentStep = ref(0);
+const userFormStatus = ref({});
 const steps = ref([
   {
     component: ClientInfo,
@@ -42,15 +44,45 @@ const nextButtonText = computed(() =>
   currentStep.value + 1 == steps.value.length ? t("finish") : t("next")
 );
 
-/* Methods */
-const nextStep = () => ++currentStep.value;
+const saveCurrentStep = computed(() => {
+  if (currentStep.value == 0) {
+    if (localStorage.getItem("currentStep")) {
+      return (currentStep.value = JSON.parse(
+        localStorage.getItem("currentStep")
+      ));
+    }
+  }
+  localStorage.setItem("currentStep", JSON.stringify(currentStep.value));
+  return currentStep.value;
+});
 
-const prevStep = () => --currentStep.value;
+/* Methods */
+const nextStep = async () => {
+  await validateUserData();
+  await validateServiceData();
+
+  if (!validateUserData()) {
+    return console.log("formulario de usuario con errores");
+  }
+
+  if (!validateServiceData()) {
+    return console.log("No hay un servicio seleccionado");
+  }
+  ++currentStep.value;
+};
+
+const prevStep = () => {
+  if (currentStep.value == 1) {
+    localStorage.removeItem("currentStep");
+    currentStep.value == 0;
+  }
+  --currentStep.value;
+};
 
 const submitAll = async () => {
   await validateDateData();
 
-  if (validateDateData()) {
+  if (validateDateData() && validateServiceData()) {
     clearLocalStorage();
     currentStep.value = 0;
   }
@@ -61,26 +93,50 @@ const validateDateData = () => {
     localStorage.getItem("meetingDate") &&
     localStorage.getItem("meetingHour")
   ) {
-    console.log("Fecha y hora validao");
     return true;
   }
-  console.log("No existe una fecha u hora en localstorage");
   return false;
 };
 
+const validateServiceData = () => {
+  if (currentStep.value == 1) {
+    if (localStorage.getItem("selectedService")) {
+      return true;
+    }
+    return false;
+  }
+  return true;
+};
+
+const receibeUserData = (values) => {
+  userFormStatus.value = values;
+};
+
+const validateUserData = () => {
+  if (currentStep.value == 0) {
+    if (userFormStatus.value.length > 0) {
+      return false;
+    }
+  }
+  return true;
+};
+
 const clearLocalStorage = () => {
+  localStorage.removeItem("userData");
+  localStorage.removeItem("currentStep");
+  localStorage.removeItem("selectedService");
   localStorage.removeItem("meetingDate");
   localStorage.removeItem("meetingHour");
 };
-
 </script>
 
 <template>
   <div class="p-5 pb-12">
-    <Sections :current-step="currentStep" />
+    <Sections :current-step="saveCurrentStep" />
     <component
       :is="steps[currentStep].component"
       @saveDateData="validateDateData"
+      @sendUserData="receibeUserData"
     />
     <div class="flex justify-center items-center">
       <div class="flex p-5 mt-4 justify-between w-full">
