@@ -47,7 +47,7 @@ const time = ref("");
 // const time = ref({ hours: 0, minutes: 0, seconds: 0 });
 // const startTime = ref({ hours: 0, minutes: 0, seconds: 0 });
 
-const selectedDays = ref(["Tue Jun 24 2022", "Tue Jun 23 2022"]);
+const selectedDays = ref(["Tue Jun 24 2022",]);
 const meetingHour = ref([
   "8:30 - 9:30",
   "9:30 - 10:30",
