@@ -1,7 +1,7 @@
 <script setup>
 /* Components */
-import ServiceProps from "../components/Steps/ServiceProps.vue";
-import Services from "../components/Steps/Services.vue";
+import ServiceProps from "../components/Steps/Services/ServiceProps.vue";
+import Services from "../components/Steps/Services/Services.vue";
 import DateRequest from "../components/Steps/DateRequest/DateRequest.vue";
 import ClientInfo from "../components/Steps/ClientInfo.vue";
 import Sections from "../components/Sections.vue";

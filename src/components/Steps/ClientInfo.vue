@@ -130,13 +130,6 @@ export default {
         this.phone = localStorageData.phone;
       }
     },
-
-    // async submit() {
-    //   const result = await this.v$.$validate();
-    //   // result ? alert("Valido") : alert("Invalido");
-    //   console.log(this.v$.$errors);
-    // },
-
   },
   created() {
     this.checkLocalStorage();
