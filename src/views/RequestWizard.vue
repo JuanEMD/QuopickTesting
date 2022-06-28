@@ -5,6 +5,7 @@ import Services from "../components/Steps/Services.vue";
 import DateRequest from "../components/Steps/DateRequest/DateRequest.vue";
 import ClientInfo from "../components/Steps/ClientInfo.vue";
 import Sections from "../components/Sections.vue";
+import renderQuotationTemplate from "../composables/SMTP/renderQuotationTemplate.js";
 import sendQuotationEmail from "../composables/SMTP/sendQuotationEmail.js";
 
 /* Composition API Libs */
@@ -81,12 +82,24 @@ const prevStep = () => {
 };
 
 const submitAll = async () => {
+  if (await validateDateData()) {
+    // Pendiente formatear fecha y convertir data a pdf
 
-  if (await validateDateData()) { // Pendiente formatear fecha y convertir data a pdf
-  
+    sendMail();
     clearLocalStorage();
     currentStep.value = 0;
   }
+};
+
+const sendMail = async () => {
+  let userData = await JSON.parse(localStorage.getItem("userData"));
+  let renderResult = await renderQuotationTemplate(
+    userData.name,
+    userData.last_name,
+    userData.email,
+    userData.phone
+  );
+  sendQuotationEmail(userData.email, renderResult);
 };
 
 const validateDateData = () => {
@@ -112,15 +125,12 @@ const validateServiceData = () => {
   return true;
 };
 
-const receibeUserData = (value) => {
+const receiveUserData = (value) => {
   userFormStatus.value = value;
 };
 
 const validateUserData = () => {
   if (userFormStatus.value) {
-    // let userEmail = JSON.parse(localStorage.getItem("userData"));
-    // sendEmail(userEmail.email);
-    // console.log(userEmail.email);
     return true;
   }
 };
@@ -140,7 +150,7 @@ const clearLocalStorage = () => {
     <component
       :is="steps[currentStep].component"
       @saveDateData="validateDateData"
-      @sendUserData="receibeUserData"
+      @sendUserData="receiveUserData"
     />
     <div class="flex justify-center items-center">
       <div class="flex p-5 mt-4 justify-between w-full">

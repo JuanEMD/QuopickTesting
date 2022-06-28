@@ -1,6 +1,12 @@
 <script>
 import useVuelidate from "@vuelidate/core";
-import { required, email, minLength, helpers } from "@vuelidate/validators";
+import {
+  required,
+  email,
+  minLength,
+  maxLength,
+  helpers,
+} from "@vuelidate/validators";
 
 export default {
   setup() {
@@ -35,7 +41,8 @@ export default {
       },
 
       phone: {
-        minLength: minLength(10),
+        minLengthValue: helpers.withMessage("Minimo 10 numeros", minLength(10)),
+        maxLengthValue: helpers.withMessage("Maximo 12 numeros", maxLength(12)),
       },
     };
   },
@@ -76,31 +83,36 @@ export default {
       }
     },
 
+    validPhoneInput() {
+      this.formInputClasses = " input-form";
+
+      if (!this.v$.phone.$dirty) {
+        return this.formInputClasses;
+      } else if (this.v$.phone.$error) {
+        return (this.InputClasses = "input-form" + " invalid-input-class");
+      } else if (!this.v$.phone.$invalid) {
+        return (this.InputClasses = "input-form");
+      }
+    },
+
     formStatus() {
-      return (this.v$.$errors);
+      return this.v$.$errors;
     },
   },
 
   watch: {
     formStatus(newStatus, oldStatus) {
-      localStorage.setItem(
-        "userData",
-        JSON.stringify({
-          name: this.name,
-          last_name: this.last_name,
-          email: this.email,
-          phone: this.phone,
-        })
-      );
-
-      this.$emit("sendUserData", this.formStatus)
+      this.saveFormData();
+      if (this.v$.$invalid) {
+        return this.$emit("sendUserData", false);
+      }
+      return this.$emit("sendUserData", true);
     },
   },
 
   methods: {
     checkLocalStorage() {
       if (localStorage.getItem("userData")) {
-
         let localStorageData = JSON.parse(localStorage.getItem("userData"));
 
         this.name = localStorageData.name;
@@ -110,12 +122,17 @@ export default {
       }
     },
 
-    // async submit() {
-    //   const result = await this.v$.$validate();
-    //   // result ? alert("Valido") : alert("Invalido");
-    //   console.log(this.v$.$errors);
-    // },
-
+    saveFormData() {
+      localStorage.setItem(
+        "userData",
+        JSON.stringify({
+          name: this.name,
+          last_name: this.last_name,
+          email: this.email,
+          phone: this.phone,
+        })
+      );
+    },
   },
   created() {
     this.checkLocalStorage();
@@ -202,10 +219,18 @@ export default {
           <div class="">
             <input
               v-model="phone"
+              @blur="v$.phone.$touch"
               :class="validPhoneInput"
               placeholder="Just a hint.."
               class="input-form"
             />
+            <p
+              class="error-message"
+              v-for="error of v$.phone.$errors"
+              :key="error.$uid"
+            >
+              {{ error.$message }}
+            </p>
             <!-- <p
             class="error-message"
             v-for="error of v$.phone.$errors"
