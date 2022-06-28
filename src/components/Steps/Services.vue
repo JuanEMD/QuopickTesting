@@ -24,8 +24,6 @@ const service = computed(() => {
 //methods
 const saveSelectedService = () => {
   localStorage.setItem("selectedService", JSON.stringify(service.value));
-  console.log(selectedService.value);
-  console.log(service.value);
 };
 </script>
 

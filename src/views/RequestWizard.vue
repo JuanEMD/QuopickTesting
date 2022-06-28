@@ -1,10 +1,11 @@
 <script setup>
 /* Components */
-import ServiceProps from "../components/Steps/ServiceProps.vue";
+import ServiceAttrs from "../components/Steps/ServiceAttrs.vue";
 import Services from "../components/Steps/Services.vue";
 import DateRequest from "../components/Steps/DateRequest/DateRequest.vue";
 import ClientInfo from "../components/Steps/ClientInfo.vue";
 import Sections from "../components/Sections.vue";
+import sendQuotationEmail from "../composables/SMTP/sendQuotationEmail.js";
 
 /* Composition API Libs */
 import { ref, computed } from "vue";
@@ -26,7 +27,7 @@ const steps = ref([
     component: Services,
   },
   {
-    component: ServiceProps,
+    component: ServiceAttrs,
   },
   {
     component: DateRequest,
@@ -58,15 +59,15 @@ const saveCurrentStep = computed(() => {
 
 /* Methods */
 const nextStep = async () => {
-  await validateUserData();
-  await validateServiceData();
-
-  if (!validateUserData()) {
-    return console.log("formulario de usuario con errores");
+  if (currentStep.value == 0) {
+    if (await !validateUserData()) {
+      return console.log("formulario de usuario con errores");
+    }
   }
-
-  if (!validateServiceData()) {
-    return console.log("No hay un servicio seleccionado");
+  if (currentStep.value == 1) {
+    if (await !validateServiceData()) {
+      return console.log("No hay un servicio seleccionado");
+    }
   }
   ++currentStep.value;
 };
@@ -80,9 +81,9 @@ const prevStep = () => {
 };
 
 const submitAll = async () => {
-  await validateDateData();
 
-  if (validateDateData() && validateServiceData()) {
+  if (await validateDateData()) { // Pendiente formatear fecha y convertir data a pdf
+  
     clearLocalStorage();
     currentStep.value = 0;
   }
@@ -100,7 +101,10 @@ const validateDateData = () => {
 
 const validateServiceData = () => {
   if (currentStep.value == 1) {
-    if (localStorage.getItem("selectedService")) {
+    if (
+      localStorage.getItem("selectedService") &&
+      JSON.parse(localStorage.getItem("selectedService")) != ""
+    ) {
       return true;
     }
     return false;
@@ -108,17 +112,17 @@ const validateServiceData = () => {
   return true;
 };
 
-const receibeUserData = (values) => {
-  userFormStatus.value = values;
+const receibeUserData = (value) => {
+  userFormStatus.value = value;
 };
 
 const validateUserData = () => {
-  if (currentStep.value == 0) {
-    if (userFormStatus.value.length > 0) {
-      return false;
-    }
+  if (userFormStatus.value) {
+    // let userEmail = JSON.parse(localStorage.getItem("userData"));
+    // sendEmail(userEmail.email);
+    // console.log(userEmail.email);
+    return true;
   }
-  return true;
 };
 
 const clearLocalStorage = () => {
