@@ -70,50 +70,52 @@ const saveSelectedService = () => {
     </div>
   </div>
   <!-- Pricing Table part disable for a acceptation -->
-  <div class="my-10">
+  <div v-if="{selectedService} === 'Web App'">
+    <div class="my-10">
       <PricingTable />
-  </div>
-  
-  <!-- input hidden  -->
-  <div class="mt-8 p-4">
-    <!-- question 1 -->
-    <div class="font-bold text-gray-600 text-xs leading-8 uppercase h-6 mx-2 my-3">
-      <h3>Presupuesto</h3>
     </div>
 
-    <div class="flex">
-      <select v-model="selectedPresupuesto" class="select-input-form" @click="saveSelectedService()">
-       
-        <option v-for="ans in Budget" :value="ans.value">
-          {{ ans.text }}
-        </option>
-      </select>
-    </div>
-    <!-- question 2 -->
-    <div class="font-bold text-gray-600 text-xs leading-8 uppercase h-6 mx-2 my-3">
-      <h3>Horas de servicio</h3>
-    </div>
+    <!-- input hidden  -->
+    <div class="mt-8 p-4">
+      <!-- question 1 -->
+      <div class="font-bold text-gray-600 text-xs leading-8 uppercase h-6 mx-2 my-3">
+        <h3>Presupuesto</h3>
+      </div>
 
-    <div class="flex">
-      <select v-model="selectedPresupuesto" class="select-input-form" @click="saveSelectedService()">
-       
-        <option v-for="ans in Hours" :value="ans.value">
-          {{ ans.text }}
-        </option>
-      </select>
-    </div>
-    <!-- question 3 -->
-    <div class="font-bold text-gray-600 text-xs leading-8 uppercase h-6 mx-2 my-3">
-      <h3>Tipo de pago</h3>
-    </div>
+      <div class="flex">
+        <select v-model="selectedPresupuesto" class="select-input-form" @click="saveSelectedService()">
 
-    <div class="flex">
-      <select v-model="selectedPresupuesto" class="select-input-form" @click="saveSelectedService()">
-       
-        <option v-for="ans in Pay" :value="ans.value">
-          {{ ans.text }}
-        </option>
-      </select>
+          <option v-for="ans in Budget" :value="ans.value">
+            {{ ans.text }}
+          </option>
+        </select>
+      </div>
+      <!-- question 2 -->
+      <div class="font-bold text-gray-600 text-xs leading-8 uppercase h-6 mx-2 my-3">
+        <h3>Horas de servicio</h3>
+      </div>
+
+      <div class="flex">
+        <select v-model="selectedPresupuesto" class="select-input-form" @click="saveSelectedService()">
+
+          <option v-for="ans in Hours" :value="ans.value">
+            {{ ans.text }}
+          </option>
+        </select>
+      </div>
+      <!-- question 3 -->
+      <div class="font-bold text-gray-600 text-xs leading-8 uppercase h-6 mx-2 my-3">
+        <h3>Tipo de pago</h3>
+      </div>
+
+      <div class="flex">
+        <select v-model="selectedPresupuesto" class="select-input-form" @click="saveSelectedService()">
+
+          <option v-for="ans in Pay" :value="ans.value">
+            {{ ans.text }}
+          </option>
+        </select>
+      </div>
     </div>
   </div>
 </template>

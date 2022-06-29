@@ -1,6 +1,12 @@
 <script>
 import useVuelidate from "@vuelidate/core";
-import { required, email, minLength, maxLength, numeric, helpers } from "@vuelidate/validators";
+import {
+  required,
+  email,
+  minLength,
+  maxLength,
+  helpers,
+} from "@vuelidate/validators";
 
 export default {
   setup() {
@@ -24,22 +30,18 @@ export default {
     return {
       name: {
         required: helpers.withMessage("Campo obligatorio", required),
-      },
-      last_name: {
-        required: helpers.withMessage("Campo obligatorio", required),
-      },
 
-      email: {
-        required: helpers.withMessage("Campo obligatorio", required),
-        email: helpers.withMessage("Email Inválido", email),
-      },
+        email: {
+          required: helpers.withMessage("Campo obligatorio", required),
+          email: helpers.withMessage("Email Inválido", email),
+        },
 
-      phone: {
-        numeric: helpers.withMessage("Error de numero telefonico", numeric),
-        minLengthValue: helpers.withMessage("Minimo es 10 numeros", minLength(10)),
-        maxLengthValue: helpers.withMessage("Maximo es 12 numeros", maxLength(12)),
+        phone: {
+          minLengthValue: helpers.withMessage("Minimo 10 numeros", minLength(10)),
+          maxLengthValue: helpers.withMessage("Maximo 12 numeros", maxLength(12)),
+        },
       },
-    };
+    }
   },
 
   computed: {
@@ -77,33 +79,47 @@ export default {
         return (this.InputClasses = "input-form" + " valid-input-class");
       }
     },
+
     validPhoneInput() {
       this.formInputClasses = " input-form";
-      if (this.phone.length === 10) {
-        return (this.InputClasses = "input-form" + " valid-input-class");
-      }
-      else if (this.phone.length === 0) {
+
+      if (!this.v$.phone.$dirty) {
         return this.formInputClasses;
-      }
-      else if (this.phone.length === 12) {
-        return (this.InputClasses = " valid-input-class");
-      }
-      else if (this.phone.length > 10 && this.phone.length < 12) {
-        return (this.InputClasses = " valid-input-class");
-      }
-      else if (this.phone.length < 10 && this.phone.length > 0) {
+      } else if (this.v$.phone.$error) {
         return (this.InputClasses = "input-form" + " invalid-input-class");
+      } else if (!this.v$.phone.$invalid) {
+        return (this.InputClasses = "input-form");
       }
-    },
-    formStatus() {
-      return (this.v$.$errors);
     },
 
+    formStatus() {
+      return this.v$.$errors;
+    },
   },
 
-  
   watch: {
     formStatus(newStatus, oldStatus) {
+      this.saveFormData();
+      if (this.v$.$invalid) {
+        return this.$emit("sendUserData", false);
+      }
+      return this.$emit("sendUserData", true);
+    },
+  },
+
+  methods: {
+    checkLocalStorage() {
+      if (localStorage.getItem("userData")) {
+        let localStorageData = JSON.parse(localStorage.getItem("userData"));
+
+        this.name = localStorageData.name;
+        this.last_name = localStorageData.last_name;
+        this.email = localStorageData.email;
+        this.phone = localStorageData.phone;
+      }
+    },
+
+    saveFormData() {
       localStorage.setItem(
         "userData",
         JSON.stringify({
@@ -113,28 +129,16 @@ export default {
           phone: this.phone,
         })
       );
-
-      this.$emit("sendUserData", this.formStatus)
-    },
-  },
-
-  methods: {
-    checkLocalStorage() {
-      if (localStorage.getItem("userData")) {
-
-        let localStorageData = JSON.parse(localStorage.getItem("userData"));
-
-        this.name = localStorageData.name;
-        this.last_name = localStorageData.last_name;
-        this.email = localStorageData.email;
-        this.phone = localStorageData.phone;
-      }
     },
   },
   created() {
     this.checkLocalStorage();
   },
-};
+  created() {
+    this.checkLocalStorage();
+  },
+}
+
 </script>
 
 <template>
@@ -146,36 +150,18 @@ export default {
       <div class="flex flex-col md:flex-row">
         <div class="w-full flex-1 mx-2 svelte-1l8159u">
           <div>
-            <input
-              :class="validNameInput"
-              @blur="v$.name.$touch"
-              v-model="name"
-              placeholder="First Name"
-              class="input-form"
-            />
-            <p
-              class="error-message"
-              v-for="error of v$.name.$errors"
-              :key="error.$uid"
-            >
+            <input :class="validNameInput" @blur="v$.name.$touch" v-model="name" placeholder="First Name"
+              class="input-form" />
+            <p class="error-message" v-for="error of v$.name.$errors" :key="error.$uid">
               {{ error.$message }}
             </p>
           </div>
         </div>
         <div class="w-full flex-1 mx-2 svelte-1l8159u">
           <div class="">
-            <input
-              :class="validLastNameInput"
-              @blur="v$.last_name.$touch"
-              v-model="last_name"
-              placeholder="Last Name"
-              class="input-form"
-            />
-            <p
-              class="error-message"
-              v-for="error of v$.last_name.$errors"
-              :key="error.$uid"
-            >
+            <input :class="validLastNameInput" @blur="v$.last_name.$touch" v-model="last_name" placeholder="Last Name"
+              class="input-form" />
+            <p class="error-message" v-for="error of v$.last_name.$errors" :key="error.$uid">
               {{ error.$message }}
             </p>
           </div>
@@ -187,18 +173,9 @@ export default {
             Your Email
           </div>
           <div class="">
-            <input
-              :class="validEmailInput"
-              @blur="v$.email.$touch"
-              v-model="email"
-              placeholder="jhon@doe.com"
-              class="input-form"
-            />
-            <p
-              class="error-message"
-              v-for="error of v$.email.$errors"
-              :key="error.$uid"
-            >
+            <input :class="validEmailInput" @blur="v$.email.$touch" v-model="email" placeholder="jhon@doe.com"
+              class="input-form" />
+            <p class="error-message" v-for="error of v$.email.$errors" :key="error.$uid">
               {{ error.$message }}
             </p>
           </div>
@@ -208,11 +185,18 @@ export default {
             Your Phone (Optional)
           </div>
           <div class="">
-            <input :class="validPhoneInput" type="number" @blur="v$.phone.$touch" v-model="phone"
-              placeholder="Just a hint.." class="input-form" />
+            <input v-model="phone" @blur="v$.phone.$touch" :class="validPhoneInput" placeholder="Just a hint.."
+              class="input-form" />
             <p class="error-message" v-for="error of v$.phone.$errors" :key="error.$uid">
               {{ error.$message }}
             </p>
+            <!-- <p
+            class="error-message"
+            v-for="error of v$.phone.$errors"
+            :key="error.$uid"
+          >
+            {{ error.$message }}
+          </p> -->
           </div>
         </div>
       </div>

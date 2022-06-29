@@ -16,27 +16,15 @@
           hideOffsetDates
           modeHeight="288"
         />
-        <HourPicker :meetingHour="meetingHour"/>
-        <!-- <Datepicker
-          v-model="time"
-          inline
-          autoApply
-          timePicker
-          :startTime="startTime"
-          :is24="true"
-          minutesIncrement="30"
-          noMinutesOverlay
-          noHoursOverlay
-        /> -->
-        <!-- @update:modelValue="checkTime" -->
+        <HourPicker />
       </div>
     </div>
   </div>
-  <h1>{{ formatedDate }}</h1>
+  {{formatedDate}}
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, provide } from "vue";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import HourPicker from "./HourPicker.vue";
@@ -44,18 +32,8 @@ import HourPicker from "./HourPicker.vue";
 //vars
 const date = ref("");
 const time = ref("");
-// const time = ref({ hours: 0, minutes: 0, seconds: 0 });
-// const startTime = ref({ hours: 0, minutes: 0, seconds: 0 });
 
-const selectedDays = ref(["Tue Jun 24 2022",]);
-const meetingHour = ref([
-  "8:30 - 9:30",
-  "9:30 - 10:30",
-  "10:30 - 11:30",
-  "13:30 - 14:30",
-  "14:30 - 15:30",
-  "14:30 - 15:30",
-]);
+const selectedDays = ref(["Tue Jun 29 2022"]);
 
 //computed properties
 const formatedDate = computed(() => {
@@ -72,24 +50,10 @@ const disabledDates = computed(() => {
   return selectedDays.value;
 });
 
-//emits
-// const emit = defineEmits(["validateDateData"]);
-
-//watchers
-// watch(formatedDate, (newformatedDate) => {
-//   emit("validateDateData");
-// });
-
 //methods
 const saveSelectedDate = () => {
   localStorage.setItem("meetingDate", JSON.stringify(formatedDate.value));
 };
-
-// const saveSelectedDay = () => {
-//   let selectedDay = ref(formatedDate.value);
-//   selectedDays.value.push(selectedDay.value);
-//   console.log(selectedDays.value);
-// };
 </script>
 
 <style scoped>
