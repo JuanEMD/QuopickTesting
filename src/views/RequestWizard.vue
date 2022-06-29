@@ -12,6 +12,7 @@ import sendQuotationEmail from "../composables/SMTP/sendQuotationEmail.js";
 import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { tr } from "date-fns/locale";
+import { Result } from "postcss";
 
 /* Libs variables */
 const { t } = useI18n();
@@ -83,23 +84,32 @@ const prevStep = () => {
 
 const submitAll = async () => {
   if (await validateDateData()) {
-    // Pendiente formatear fecha y convertir data a pdf
-
-    sendMail();
+    // Pendiente formatear fecha
+    sendEmail();
     clearLocalStorage();
     currentStep.value = 0;
   }
 };
 
-const sendMail = async () => {
-  let userData = await JSON.parse(localStorage.getItem("userData"));
+const renderTemplate = async (userData) => {
   let renderResult = await renderQuotationTemplate(
     userData.name,
     userData.last_name,
     userData.email,
     userData.phone
   );
-  sendQuotationEmail(userData.email, renderResult);
+  return renderResult;
+};
+
+const sendEmail = async () => {
+  let LocalStorageUserData = await getLocalStorageUserData();
+  let renderResponse = await renderTemplate(LocalStorageUserData);
+  console.log(renderResponse);
+  // sendQuotationEmail(LocalStorageUserData.email, renderResponse);
+};
+
+const getLocalStorageUserData = () => {
+  return JSON.parse(localStorage.getItem("userData"));
 };
 
 const validateDateData = () => {

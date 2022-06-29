@@ -1,6 +1,5 @@
 export default function renderQuotationTemplate(val1, val2, val3, val4) {
-  let bodyQuotationTemplate = "";
-  return (bodyQuotationTemplate = `
+  return `
 <html lang="en">
 <head>
   <style>
@@ -26,5 +25,5 @@ export default function renderQuotationTemplate(val1, val2, val3, val4) {
   </div>
 </body>
 </html>
-`);
+`;
 }
