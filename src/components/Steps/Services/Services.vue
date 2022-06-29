@@ -69,6 +69,7 @@ const saveSelectedService = () => {
       </select>
     </div>
   </div>
+  <!-- Pricing Table part disable for a acceptation -->
   <div class="my-10">
       <PricingTable />
   </div>

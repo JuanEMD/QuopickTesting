@@ -6,7 +6,7 @@ import ButtonSubscribe from "./ButtonSubscribe.vue"
 <template>
     <div class="flex justify-center">
         <!-- Card #1 left -->
-        <div class=" grid grid-cols-3 gap-3">
+        <div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
             <div class="group">
                 <div
                     class=" rounded w-60 bg-white border-2 px-8 py-8 text-left group-hover:bg-Qgreen group-hover:ease-in-out duration-300 group-hover:text-white">
@@ -87,4 +87,8 @@ import ButtonSubscribe from "./ButtonSubscribe.vue"
         </div>
     </div>
 </template>
-
+ <!-- <style>
+ .hover_Buttom {
+  @apply group-hover:bg-Qgreen group-hover:ease-in-out duration-300 group-hover:text-white;
+}
+ </style> -->
