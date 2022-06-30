@@ -3,6 +3,7 @@ import UserSVG from "./icons/UserSVG.vue";
 import ServicesSVG from "./icons/ServicesSVG.vue";
 import ServiceSpecsSVG from "./icons/ServiceSpecsSVG.vue";
 import RelojSVG from "./icons/RelojSVG.vue";
+import ReceiptSVG from "./icons/ReceiptSVG.vue";
 
 /* props */
 const props = defineProps({
@@ -59,7 +60,14 @@ const selectSectionLine = (value) => {
       <div class="line-section" :class="selectSectionLine(2)"></div>
       <div class="flex items-center relative">
         <div class="section" :class="selectSectionClass(3)">
-          <RelojSVG :icon-class="selectSectionClass(3)" />
+          <ReceiptSVG :icon-class="selectSectionClass(3)" />
+          <div class="label-section">Cotizacion</div>
+        </div>
+      </div>
+      <div class="line-section" :class="selectSectionLine(3)"></div>
+      <div class="flex items-center relative">
+        <div class="section" :class="selectSectionClass(4)">
+          <RelojSVG :icon-class="selectSectionClass(4)" />
           <div class="label-section">{{ $t("meeting") }}</div>
         </div>
       </div>
@@ -101,5 +109,4 @@ const selectSectionLine = (value) => {
 .label-section {
   @apply absolute top-0 -ml-10 text-center mt-14 w-32 text-xs font-medium uppercase;
 }
-
 </style>

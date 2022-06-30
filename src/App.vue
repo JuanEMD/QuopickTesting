@@ -17,7 +17,6 @@ import FooterComponent from "./components/FooterComponent.vue";
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  /* margin-top: 60px; */
   height: 100vh;
 }
 </style>

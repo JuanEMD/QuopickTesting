@@ -24,9 +24,9 @@ const selectHour = (index, hour) => {
   localStorage.setItem("meetingHour", JSON.stringify(selectedHour.value));
 };
 
-const selectItem = (index) => {
+// const selectItem = (index) => {
   
-}
+// }
 
 
 </script>

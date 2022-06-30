@@ -1,12 +1,14 @@
 <script setup>
 /* Components */
-import ServiceAttrs from "../components/Steps/ServiceAttrs.vue";
-import Services from "../components/Steps/Services.vue";
-import DateRequest from "../components/Steps/DateRequest/DateRequest.vue";
-import ClientInfo from "../components/Steps/ClientInfo.vue";
 import Sections from "../components/Sections.vue";
-import renderQuotationTemplate from "../composables/SMTP/renderQuotationTemplate.js";
+import ClientInfo from "../components/Steps/ClientInfo.vue";
+import Services from "../components/Steps/Services.vue";
+import ServiceAttrs from "../components/Steps/ServiceAttrs.vue";
+import QuotationPreview from "../components/Steps/QuotationPreview.vue";
+import DateRequest from "../components/Steps/DateRequest/DateRequest.vue";
+import renderEmailQuotationTemplate from "../composables/Templates/renderEmailQuotationTemplate.js";
 import sendQuotationEmail from "../composables/SMTP/sendQuotationEmail.js";
+import getServicesObject from "../composables/getServicesObject.js"
 
 /* Composition API Libs */
 import { ref, computed } from "vue";
@@ -16,7 +18,6 @@ import { Result } from "postcss";
 
 /* Libs variables */
 const { t } = useI18n();
-// const meetingDate = ref("")
 
 /* Data Binding */
 const currentStep = ref(0);
@@ -30,6 +31,9 @@ const steps = ref([
   },
   {
     component: ServiceAttrs,
+  },
+  {
+    component: QuotationPreview,
   },
   {
     component: DateRequest,
@@ -86,40 +90,34 @@ const submitAll = async () => {
   if (await validateDateData()) {
     // Pendiente formatear fecha
     sendEmail();
-    clearLocalStorage();
+    // clearLocalStorage();
     currentStep.value = 0;
   }
 };
 
-const renderTemplate = async (userData) => {
-  let renderResult = await renderQuotationTemplate(
-    userData.name,
-    userData.last_name,
-    userData.email,
-    userData.phone
-  );
-  return renderResult;
-};
-
 const sendEmail = async () => {
-  let LocalStorageUserData = await getLocalStorageUserData();
-  let renderResponse = await renderTemplate(LocalStorageUserData);
-  console.log(renderResponse);
-  // sendQuotationEmail(LocalStorageUserData.email, renderResponse);
+  let LocalStorageUserData = await JSON.parse(localStorage.getItem("userData"));
+  let selectedService = await JSON.parse(localStorage.getItem("selectedService"));
+  let serviceAttrs = await JSON.parse(localStorage.getItem("serviceAttrs"));
+  let date = {
+    meetingDate: await JSON.parse(localStorage.getItem("meetingDate")),
+    meetingHour: await JSON.parse(localStorage.getItem("meetingHour"))
+  }
+  let formatedServices = await getServicesObject(serviceAttrs);
+
+  let renderResponse = await renderEmailQuotationTemplate(LocalStorageUserData, selectedService, formatedServices, date);
+  sendQuotationEmail(LocalStorageUserData.email, renderResponse);
 };
 
-const getLocalStorageUserData = () => {
-  return JSON.parse(localStorage.getItem("userData"));
+
+const receiveUserData = (value) => {
+  userFormStatus.value = value;
 };
 
-const validateDateData = () => {
-  if (
-    localStorage.getItem("meetingDate") &&
-    localStorage.getItem("meetingHour")
-  ) {
+const validateUserData = () => {
+  if (userFormStatus.value) {
     return true;
   }
-  return false;
 };
 
 const validateServiceData = () => {
@@ -135,14 +133,14 @@ const validateServiceData = () => {
   return true;
 };
 
-const receiveUserData = (value) => {
-  userFormStatus.value = value;
-};
-
-const validateUserData = () => {
-  if (userFormStatus.value) {
+const validateDateData = () => {
+  if (
+    localStorage.getItem("meetingDate") &&
+    localStorage.getItem("meetingHour")
+  ) {
     return true;
   }
+  return false;
 };
 
 const clearLocalStorage = () => {
@@ -157,11 +155,16 @@ const clearLocalStorage = () => {
 <template>
   <div class="p-5 pb-12">
     <Sections :current-step="saveCurrentStep" />
-    <component
-      :is="steps[currentStep].component"
-      @saveDateData="validateDateData"
-      @sendUserData="receiveUserData"
-    />
+    <Suspense>
+      <component
+        :is="steps[currentStep].component"
+        @saveDateData="validateDateData"
+        @sendUserData="receiveUserData"
+      />
+      <template #fallback><div class="mt-8 p-4">
+        Loading...
+      </div></template></Suspense
+    >
     <div class="flex justify-center items-center">
       <div class="flex p-5 mt-4 justify-between w-full">
         <button
@@ -184,6 +187,7 @@ const clearLocalStorage = () => {
         </div>
       </div>
     </div>
+  <!-- <div v-html="test"></div> -->
   </div>
 </template>
 
